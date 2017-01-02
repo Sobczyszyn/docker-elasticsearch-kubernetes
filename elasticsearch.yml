@@ -4,17 +4,16 @@ cluster:
 node:
   master: ${NODE_MASTER}
   data: ${NODE_DATA}
-  ingest: ${NODE_INGEST}
-  max_local_storage_nodes: ${MAX_LOCAL_STORAGE_NODES}
 
 network.host: ${NETWORK_HOST}
 
 path:
   data: /data/data
   logs: /data/log
+  plugins: /elasticsearch/plugins
+  work: /data/work
 
-bootstrap:
-  memory_lock: true
+bootstrap.mlockall: true
 
 http:
   enabled: ${HTTP_ENABLE}
@@ -28,8 +27,10 @@ cloud:
     service: ${DISCOVERY_SERVICE}
     namespace: ${NAMESPACE}
 discovery:
+  type: kubernetes
   zen:
-    hosts_provider: kubernetes
     minimum_master_nodes: ${NUMBER_OF_MASTERS}
 
-plugin.mandatory: discovery-kubernetes
+index:
+    number_of_shards: ${NUMBER_OF_SHARDS}
+    number_of_replicas: ${NUMBER_OF_REPLICAS}
